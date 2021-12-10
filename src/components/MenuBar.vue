@@ -5,10 +5,12 @@
     <i class="fas fa-bars"></i>
 </div>
 <div class="home__icon px-2">
-    <router-link to="/" v-on:click="msg = false">
+    <!-- <router-link to="/" v-on:click="msg = false"> -->
+    <router-link to="/" @click="this.$store.state.showProduct = false">
     <i class="fas fa-home"></i>
     Home</router-link> 
-    <span v-if="msg">Product</span>
+    <span class="product__icon" v-if = "$route.path == '/product'"> > Product</span>
+    <!-- <span v-if="msg">Product</span> -->
     <!-- <router-link to="/product">Product</router-link> -->
 </div>
     </div>
@@ -28,13 +30,14 @@
       <div class="modal-body rounded m-0 ps-md-5 d-flex justify-content-between">
          
               <div class="d-flex flex-column align-items-center">
-            <router-link to="/product" v-on:click="msg=true">
+            <!-- <router-link to="/product" v-on:click="msg=true"> -->
+            <router-link to="/product" class="product__link">
 
             <div class="productImg__wrap mx-auto" data-bs-dismiss="modal">
         <img src="../assets/admin.svg" alt="product" class="img-fluid">
 
             </div>
-            <span data-bs-dismiss="modal">
+            <span data-bs-dismiss="modal" >
 Product</span>
             </router-link>
 
@@ -57,18 +60,22 @@ Product</span>
 
 export default {
   name: 'MenuBar',
-  props:{
-      msg: Boolean
-  },
+//   props:{
+//       msg: Boolean
+//   },
 //   components: {
 //     HelloWorld
 //   }
 methods:{
     login(){
-        // alert("hello");
         this.msg = true
     }
 },
+ computed: {
+     showProduct() {
+      return this.$store.state.showProduct
+    }
+ }
 
 // data(){
 //     return{
@@ -77,10 +84,22 @@ methods:{
 // }
 }
 </script>
-<style>
+<style scoped>
 .bg-blue{
 background: #0357a8 ;
 color: #fff;
+}
+.product__link{
+text-decoration: none;
+}
+.product__link span{
+color: #0357a8;
+font-weight: bold;
+}
+.home__icon a , .product__icon{
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
 }
 .menu__icon{
     border-right: 1px solid #fff ;

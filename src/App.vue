@@ -1,8 +1,9 @@
 <template>
+<!-- <div @click="this.$store.state.count++">{{ count }}</div> -->
   <div id="nav" class="w-100">
-  <Header class="w-100" :msg = "msg"/>
+  <Header class="w-100"/>
   <div class="px-3 w-100 h-100 d-flex flex-column position-relative">
-  <MenuBar :msg = "msg"/>
+  <MenuBar/>
   <router-view/>
 
   <Footer/>
@@ -18,7 +19,6 @@ import MenuBar from './components/MenuBar.vue'
 import Footer from './components/Footer.vue'
 import Home from './views/Home.vue'
 
-
 export default {
   components: {
     Header,
@@ -30,7 +30,12 @@ data(){
   return {
     msg: false,
   }
-}
+},
+//  computed: {
+//     count () {
+//       return this.$store.state.count
+//     }
+//  }
 }
 </script>
 
@@ -59,11 +64,11 @@ data(){
 }
 
 
-#nav a {
+/* #nav a {
   font-weight: bold;
-  /* color: #fff; */
+  color: #fff;
   text-decoration: none;
-}
+} */
 
 #nav a.router-link-exact-active {
   color: #fff;

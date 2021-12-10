@@ -1,6 +1,6 @@
 <template>
 <div class="col-12">
-    <div class="bg-blue px-2 my-2 rounded text-center">
+    <div class="bg-blue px-2 my-lg-2 mt-2  rounded text-center">
 <span>Dot Care 5.0.0.1. @ Copyright 2021, AHBS.</span>
     </div>
 

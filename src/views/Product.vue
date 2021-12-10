@@ -13,12 +13,12 @@
             <select
               class="form-select form-select-sm mb-3"
               aria-label=".form-select-lg example"
-              id="select1"
+              id="select1" v-model="selectedOption"
             >
-              <option selected disabled>Select Warehouse</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+              <option selected value="" disabled >Select Warehouse</option>
+              <option :value="item.name" :key="item.id" v-for="item in arr">{{item.name}}</option>
+              <!-- <option value="2">Two</option>
+              <option value="3">Three</option> -->
             </select>
           </div>
         </div>
@@ -28,12 +28,11 @@
             <select
               class="form-select form-select-sm mb-3"
               aria-label=".form-select-lg example"
-              id="select1"
+              id="select1" :disabled="!selectedOption ? isWareHouse = true : isWareHouse = false" 
+              v-model="selectedType"
             >
-              <option selected disabled>Select UOM Type</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+              <option selected disabled value="">Select UOM Type</option>
+              <option :key="item.id" v-for ="item in filteredType" :value="item.type">{{item.type}}</option>
             </select>
           </div>
         </div>
@@ -61,9 +60,10 @@
               <input
                 class="form-check-input"
                 type="radio"
+                value="all"
                 name="flexRadioDefault"
                 id="flexRadioDefault1"
-                checked
+                checked v-model="picked" :disabled="!selectedType"
               />
               <label class="form-check-label" for="flexRadioDefault1">
                 All Product
@@ -73,16 +73,18 @@
               <input
                 class="form-check-input"
                 type="radio"
+                value="sep"
                 name="flexRadioDefault"
-                id="flexRadioDefault2"
+                id="flexRadioDefault2" v-model="picked" :disabled="!selectedType"
               />
               <label class="form-check-label" for="flexRadioDefault2">
                 Specific Product
+               
               </label>
             </div>
           </div>
         </div>
-        <div class="col-12 col-sm-4 offset-sm-2 col-lg-5 offset-lg-0">
+        <div class="col-12 col-sm-4 offset-sm-2 col-lg-5 offset-lg-0" v-if = 'picked == "sep"'>
           <div class="mb-3">
             <label for="select1" class="form-label m-0">Product *</label>
             <select
@@ -100,7 +102,7 @@
       </div>
       <div class="row text-start justify-content-sm-end text-sm-end">
         <div class="col-12 col-lg-2">
-          <button type="button" class="btn btn-primary">Search</button>
+          <button type="button" class="btn btn-primary" :disabled="!selectedType" @click="searchProduct" >Search</button>
         </div>
       </div>
       <h6><i class="fas fa-file-alt"></i> Product Details</h6>
@@ -195,3 +197,88 @@
     </div>
   </div>
 </template>
+
+
+<script>
+export default {
+
+    data() {
+    return {
+    
+   isWareHouse: false,
+   picked:'',
+   selectedOption: '',
+   selectedType:'',
+   filterdArr: [],
+   arr:[
+     {name:'a-warehouse', types:[{
+       type:'typeA',
+       products: [
+         {
+           product1: 'tel',
+           Quantity:0
+         },
+           {
+           product2: 'tel',
+           Quantity:2
+         }
+       ]
+       },
+       {
+       type:'typeb',
+       products: [
+         {
+           product1: 'tel',
+           Quantity:5
+         },
+           {
+           product2: 'tel',
+           Quantity:2
+         }
+       ]
+       }]
+       
+       },
+     {name:'b-warehouse', types:[{
+type:'typeD'
+     }]},
+     {name:'c-warehouse', types:[{
+       type:'typeG'
+     }]},
+   ]
+    }
+  },
+
+  methods: {
+    searchProduct(){
+      console.log(this.selectedType);
+  
+      let fh = this.filterdArr.types 
+      console.log(fh);
+
+  
+
+    }
+  },
+  computed:{
+    filteredType(){
+      let hh = this.arr.find(e=>{
+      return e.name.includes(this.selectedOption)
+      }); 
+      console.log(hh.types);
+      this.filterdArr = hh ;
+      console.log(this.filterdArr);
+     return hh.types
+    },
+    hideDrop(){
+return this.selectedOption;
+    }
+  },
+  watch:{
+    selectedOption(){
+      this.selectedType = ''
+    }
+  }
+    
+}
+</script>

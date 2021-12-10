@@ -1,7 +1,7 @@
 <template>
-<nav class="navbar navbar-expand-lg navbar-light">
+<nav class="navbar navbar-expand-lg navbar-light p-0">
   <div class="container-fluid">
- <a class="navbar-brand" href="#"   v-on:click="msg=false">
+ <a class="navbar-brand" href="#">
              <img src="../assets/logo.png" alt="logo" class="img-fluid">
     </a>
 
@@ -55,9 +55,12 @@ export default {
     userName: 'Hager Mohamed'
     }
   },
-  props:{
-msg:Boolean
-  }
+   computed: {
+     showProduct() {
+      return this.$store.state.showProduct
+    }
+ }
+
 //   components: {
 //     HelloWorld
 //   }
@@ -67,8 +70,9 @@ msg:Boolean
 </script>
 
 <style scoped>
+
  .navbar-brand img {
-     max-width: 160px;
+     max-width: 130px;
  }
  .search {
      background: #e8f0f7;
@@ -94,6 +98,9 @@ msg:Boolean
        box-shadow: 3px 3px 10px #c9c9c9;
        background: #fff;
 
+ }
+ .navbar-toggler-icon{
+font-size: 1rem;
  }
 
  </style>
