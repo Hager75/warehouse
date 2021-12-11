@@ -4,7 +4,6 @@
   </div>
   <div class="d-flex flex-grow-1 bg-white justify-content-around">
     <div class="container-fluid p-2 py-md-3 px-md-5">
-      <!--  -->
       <h6 class="header-style">
         <i class="fas fa-clone icon-color"></i> Basic Information
       </h6>
@@ -22,8 +21,6 @@
               <option :value="item.name" :key="item.id" v-for="item in arr">
                 {{ item.name }}
               </option>
-              <!-- <option value="2">Two</option>
-              <option value="3">Three</option> -->
             </select>
           </div>
         </div>
@@ -58,8 +55,8 @@
               :value="showZero"
               id="flexCheckDefault"
               v-model="showZero"
-           @click="showZeroProduct($event)"
-           :disabled="!selectedType"
+              @click="showZeroProduct($event)"
+              :disabled="!selectedType"
             />
             <label class="form-check-label" for="flexCheckDefault">
               Show Zero Balance
@@ -168,7 +165,6 @@
                         aria-label="Search"
                       />
                       <i class="fas fa-search search__icon ps-2"></i>
-                      <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
                     </form>
                   </td>
                   <td>
@@ -180,7 +176,6 @@
                         aria-label="Search"
                       />
                       <i class="fas fa-search search__icon ps-2"></i>
-                      <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
                     </form>
                   </td>
                   <td>
@@ -192,7 +187,6 @@
                         aria-label="Search"
                       />
                       <i class="fas fa-search search__icon ps-2"></i>
-                      <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
                     </form>
                   </td>
                 </tr>
@@ -246,7 +240,7 @@ export default {
     return {
       value: [],
       options: [],
-      final:[],
+      final: [],
       isWareHouse: false,
       picked: "all",
       selectedOption: "",
@@ -260,7 +254,6 @@ export default {
       typesProdcut: [],
       originSelectedProduct: [],
       newTypes: [],
-      // showZeroProduct:[],
       arr: [
         {
           name: "a-warehouse",
@@ -291,7 +284,7 @@ export default {
                 },
               ],
             },
-                  {
+            {
               type: "typeC",
               products: [
                 {
@@ -306,11 +299,11 @@ export default {
             },
           ],
         },
-        
+
         {
           name: "b-warehouse",
           types: [
-          {
+            {
               type: "typeD",
               products: [
                 {
@@ -330,7 +323,6 @@ export default {
                   name: "iphone",
                   quantity: 0,
                 },
-               
               ],
             },
           ],
@@ -338,17 +330,18 @@ export default {
         {
           name: "c-warehouse",
           types: [
-          {
+            {
               type: "typeG",
               products: [
                 {
                   name: "cars",
                   quantity: 15,
                 },
-                  {
+                {
                   name: "bikes",
                   quantity: 5,
-                }, {
+                },
+                {
                   name: "motorcycle",
                   quantity: 1,
                 },
@@ -361,9 +354,14 @@ export default {
   },
 
   methods: {
+    filterOptions() {
+      let options = this.selectedProduct.map((e) => e.name);
+      const uniqueOptions = new Set(options);
+      this.options = [...uniqueOptions];
+    },
     showZeroProduct($event) {
+      // this.value = [] ;
       this.selectedProduct = this.originSelectedProduct;
-      console.log($event.target);
       if (!$event.target.checked) {
         this.showZero == false;
         this.selectedProduct = this.selectedProduct.filter((e) => {
@@ -371,25 +369,44 @@ export default {
         });
       } else if ($event.target.checked) {
         this.showZero == true;
-        return (this.selectedProduct = this.originSelectedProduct);
+        this.selectedProduct = this.originSelectedProduct;
       }
+      this.filterOptions();
+
+      console.log(this.selectedProduct);
+      console.log(this.options);
     },
- 
+
     searchProduct() {
+      this.checkzero();
+      this.filterOptions();
       this.showTable = true;
       this.searchedType = this.selectedType;
-       this.value = [] ;
-      this.options= [] ;
-      this.isWareHouse= false ;
-      this.picked= "all" ;
-      this.selectedOption= ""
-      this.final = this.selectedProduct 
-      // this.searchedType= ""
-      // console.log(this.value);
+      this.isWareHouse = false;
+      if (this.picked == "sep") {
+        let result = this.selectedProduct.filter((e) => {
+          return this.value.includes(e.name);
+        });
+        this.selectedProduct = result;
+      }
+      this.picked = "all";
+      this.selectedOption = "";
+      this.final = this.selectedProduct;
+    },
+    checkzero() {
+      if (this.showZero == false) {
+        this.selectedProduct = this.selectedProduct.filter((e) => {
+          return e.quantity > 0;
+        });
+      } else if (this.showZero == true) {
+        this.selectedProduct = this.originSelectedProduct;
+      }
     },
   },
   computed: {
     filteredType() {
+      this.value = [];
+      this.options = [];
       let selectedWareHouse = this.arr.find((e) => {
         return e.name.includes(this.selectedOption);
       });
@@ -397,7 +414,6 @@ export default {
       this.typesProdcut = selectedWareHouse.types;
       return selectedWareHouse.types;
     },
-
   },
   watch: {
     selectedOption() {
@@ -406,47 +422,31 @@ export default {
     selectedType() {
       this.value = [];
       this.options = [];
-      // this.searchedType = this.selectedType;
+      console.log(this.options);
       this.newTypes = this.typesProdcut.filter((e) => {
         return e.type.includes(this.selectedType);
       });
       this.selectedProduct = this.newTypes[0].products;
-  // console.log(this.showZero);
-      if (!this.showZero) {
-        this.selectedProduct = this.selectedProduct.filter((e) => {
-          return e.quantity > 0;
-        });  
-      }
-  // console.log(this.selectedProduct);
-      this.originSelectedProduct = this.newTypes[0].products;
-      let options = this.selectedProduct.map((e) => e.name);
-      const uniqueOptions = new Set(options);
-      this.options = [...uniqueOptions];
-    },
-    picked() {
-      console.log(this.picked);
-      if (this.picked == "all") {
-        this.selectedProduct = this.selectedProduct.filter((e) => {
-          return e.quantity > 0;
-        });
-      }
-    },
 
+      this.checkzero();
+      this.originSelectedProduct = this.newTypes[0].products;
+      this.filterOptions();
+    },
+    // picked() {
+    //   console.log(this.picked);
+    //   if (this.picked == "all") {
+    //     this.selectedProduct = this.selectedProduct.filter((e) => {
+    //       return e.quantity > 0;
+    //     });
+    //   }
+    // },
 
     value() {
-      this.selectedProduct = this.originSelectedProduct;
-
-      let searchByProduct = this.selectedProduct;
-      console.log(this.selectedProduct);
-      console.log(this.value);
       if (this.value.length) {
-        let result = searchByProduct.filter((e) => {
+        let result = this.selectedProduct.filter((e) => {
           return this.value.includes(e.name);
         });
-        console.log(result);
         this.selectedProduct = result;
-      } else {
-        this.selectedProduct = this.newTypes[0].products;
       }
     },
   },
