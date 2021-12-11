@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
+    "@vueform/multiselect": "^2.2.1",
     "bootstrap": "^5.1.3",
     "core-js": "^3.6.5",
     "vue": "^3.0.0",
